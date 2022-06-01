@@ -3,19 +3,19 @@ import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { getToWatchItems } from "../../Redux/toWatchSlice";
 import { AiOutlineClose } from 'react-icons/ai';
+
+import { movies } from "../../Data/data";
 import FavItem from "./FavItem";
 import Rating from "../Filter/Rating";
 import Top from "../Filter/Top";
-import { movies } from "../../Data/data";
 
-const ToWatch = ({setShowToWatch}) => {
+const ToWatch = ({setShowToWatch, toggle, setToggle}) => {
     const savedItems = useSelector(getToWatchItems);
 
-    const favItems = useSelector(getToWatchItems);
     const [likedMovies, setLikedMovies] = useState(() => {
         let newArr = [];
         let arr = [];
-        favItems.map((item) => {
+        savedItems.map((item) => {
             const movie = movies.filter((el) => {
                 return el.id === item.movieID
             })
@@ -30,7 +30,7 @@ const ToWatch = ({setShowToWatch}) => {
         return newArr;
     });
 
-	const genres = Rating(likedMovies, "genres");
+    const genres = Rating(likedMovies, "genres");
 	const actors = Rating(likedMovies, "actors");
 
     const topGenres = Top(genres, 5);
@@ -38,6 +38,7 @@ const ToWatch = ({setShowToWatch}) => {
 
     const closeToWatch = () => {
         setShowToWatch(false);
+        setToggle(!toggle);
     }
     return(
         <Wrapper>
@@ -46,7 +47,7 @@ const ToWatch = ({setShowToWatch}) => {
                 savedItems &&
                 savedItems.map((item) => {
                     return (
-                        <FavItem item={item} key={Math.floor(Math.random() * 100000000000000)}/>
+                        <FavItem item={item} key={Math.floor(Math.random() * 100000000000000)} toggle={toggle} setToggle={setToggle}/>
                     )
                 })
             }
@@ -102,5 +103,4 @@ const Icon = styled.button`
         cursor: pointer;
     }
 `;
-
 export default ToWatch;

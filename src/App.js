@@ -1,7 +1,5 @@
 import { useState } from 'react'; 
 import './index.css';
-// import { movies } from "./Data/data";
-// import Rating from "./Components/Filter/Rating";
 import NavBar from "./Components/NavBar/NavBar";
 import Movies from "./Components/Movies/Movies";
 import SideBar from './Components/Filter/SideBar';
@@ -21,14 +19,6 @@ function App() {
 			return b[string] - a[string];
 		});
 	}
-	
-	
-	// const genres = Rating(movies, "genres");
-	// const actors = Rating(movies, "actors");
-	
-	// const topGenres = top(genres, 10);
-	// const topActors = top(actors, 10);
-
 
 	return (
 		<>
@@ -37,10 +27,10 @@ function App() {
 				showSideBar &&
 				<SideBar setAllMovies={setAllMovies} setShowSideBar={setShowSideBar}/>
 			}
-			<Movies allMovies={allMovies} sortByRating={sortByRating} setShowToWatch={setShowToWatch}/>
+			<Movies allMovies={allMovies} sortByRating={sortByRating} setShowToWatch={setShowToWatch} setAllMovies={setAllMovies}/>
 			{
 				showToWatch &&
-				<ToWatch setShowToWatch={setShowToWatch} showToWatch={showToWatch}/>
+				<ToWatch setShowToWatch={setShowToWatch} showToWatch={showToWatch} toggle={toggle} setToggle={setToggle}/>
 			}
 		</>
 	);

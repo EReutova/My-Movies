@@ -4,12 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 import {BsFillBookmarkFill} from 'react-icons/bs';
 import {MdSmartDisplay} from 'react-icons/md';
 
-import { addItemToWatch, getToWatchItems } from "../../Redux/toWatchSlice";
+import { addItemToWatch, getToWatchItems, removeItemFromToWatch } from "../../Redux/toWatchSlice";
 
 const Movie = ({movie, setShowToWatch}) => {
     const dispatch = useDispatch();
     const toWatchItems = useSelector(getToWatchItems);
-
+    
     const handleAddToWatch = () => {
         let match = toWatchItems.find((item) => {
             return item.movieID === movie.id
@@ -18,12 +18,17 @@ const Movie = ({movie, setShowToWatch}) => {
             dispatch(addItemToWatch({movie}));
             setShowToWatch(false);
         }
-        /////////TODO//////////////////
-        else {
-            window.alert("movie is already in your to watch list")
+    }
+
+    const handleDeleteItem = () => {
+        let match = toWatchItems.find((item) => {
+            return item.movieID === movie.id
+        })
+        if (match) {
+            dispatch(removeItemFromToWatch({toWatchItemId: match.id}));
         }
     }
-    
+
     const handleOpenTrailer = () => {
         window.open(
             `${movie.video}`,
@@ -41,7 +46,11 @@ const Movie = ({movie, setShowToWatch}) => {
                     <Par>IMDb: {movie.IMDb}</Par>
                     <Div>
                         <About>
-                            <Button onClick={handleAddToWatch}><BsFillBookmarkFill/> Буду смотреть</Button>
+                            {
+                                !toWatchItems.find((item) => item.movieID === movie.id)
+                                    ? <Button onClick={handleAddToWatch}><BsFillBookmarkFill/> Буду смотреть</Button>
+                                    : <Button1 onClick={handleDeleteItem}><BsFillBookmarkFill/> Буду смотреть</Button1>
+                            }
                             <SubHeaderBlack>О фильме</SubHeaderBlack>
                             <table>
                                 <tbody>
@@ -72,7 +81,7 @@ const Movie = ({movie, setShowToWatch}) => {
                             {
                                 movie.actors.map((actor) => {
                                     return (
-                                        <div key={actor}>{actor}</div>
+                                        <div key={actor} actor={actor}>{actor}</div>
                                     )
                                 })
                             }
@@ -100,14 +109,13 @@ const Main = styled.div`
     margin: 20px;
     padding: 20px;
     background-color: lightgray;
+    border-radius: 10px;
     &:hover{
-        box-shadow: 0 0 10px grey, 0 0 15px grey, 0 0 20px grey;
-
+        box-shadow: 5px 5px 0  rgba(0,0,0,0.7);
     }
 `;
 const Wrapper = styled.div`
     display: flex;
-    /* height: 400px; */
 `;
 const Img = styled.img`
     margin-right: 20px;
@@ -136,9 +144,21 @@ const Button = styled.button`
     margin-right: 10px;
     height: 40px;
     font-size: 15px;
+    transition: 300ms;
     &:hover{
-        color: grey;
+        background: rgba(0,0,0,0.8);
+        border: 1px solid rgba(0,0,0,0.8);
+        color: white;
         cursor: pointer;
+        box-shadow: 5px 5px 0 rgba(0,0,0,0.2);
+    }
+`;
+const Button1 = styled(Button)`
+    background: rgba(0,0,0,0.8);
+    border: 1px solid rgba(0,0,0,0.8);
+    color: white;
+    &:hover{
+        color: white;
     }
 `;
 const Btn = styled(Button)`
@@ -147,6 +167,9 @@ const Btn = styled(Button)`
     margin-left: -20px;
     &:hover{
         color: red;
+        border: none;
+        box-shadow: none;
+        background: transparent;
     }
 `;
 

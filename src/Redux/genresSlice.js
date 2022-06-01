@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const genresSlice = createSlice({
     name: 'genres',
     initialState: {
-        selectedGenre: 'драма'
+        selectedGenre: ''
     },
     reducers: {
         filterGenre: (state, action) => {

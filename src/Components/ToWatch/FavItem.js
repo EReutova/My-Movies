@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { removeItemFromToWatch } from "../../Redux/toWatchSlice";
 import { movies } from "../../Data/data";
 
-const FavItem = ({item}) => {
+const FavItem = ({item, toggle, setToggle}) => {
     const dispatch = useDispatch();
 
     const movie = movies.find((el) => {
@@ -15,6 +15,7 @@ const FavItem = ({item}) => {
 
 
     const removeFromList = () => {
+        setToggle(!toggle);
         dispatch(removeItemFromToWatch({toWatchItemId: item.id}))
     }
 
@@ -64,13 +65,14 @@ const FavItem = ({item}) => {
 
 const Wrapper = styled.div`
     padding: 20px;
-    margin: 10px;
+    margin: 15px;
     background: black;
     color: white;
     display: flex;
     position: relative;
+    border-radius: 5px;
     &:hover{
-        box-shadow: 0 0 10px grey, 0 0 15px grey, 0 0 20px grey;
+        box-shadow: 3px 3px 0 lightgrey;
     }
 `;
 const Img = styled.img`
@@ -109,6 +111,7 @@ const Icon = styled.button`
     color: white;
     background: transparent;
     border: none;
+    transition: 300msvlm;;
     &:hover{
         cursor: pointer;
         color: red;

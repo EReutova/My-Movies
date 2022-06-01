@@ -6,11 +6,12 @@ import { getSelectedGenre } from "../../Redux/genresSlice";
 import { movies } from "../../Data/data";
 import Movie from "./Movie";
 
-const Movies = ({allMovies, sortByRating, setShowToWatch}) => {
+const Movies = ({allMovies, setAllMovies, sortByRating, setShowToWatch}) => {
     const selectedGenre = useSelector(getSelectedGenre);
     const [onTop, setOnTop] = useState(false);
 
     useEffect(() => {
+        setAllMovies(true);
         window.addEventListener("scroll", () => {
             if (window.pageYOffset > 500) {
                 setOnTop(true);
@@ -36,7 +37,7 @@ const Movies = ({allMovies, sortByRating, setShowToWatch}) => {
             {
                 movies
                 .filter((movie) => {
-                    if(allMovies === true) return true;
+                    if(allMovies === true) return true; 
                     return movie.genres.includes(selectedGenre);
                 })
                 .map(movie => <Movie key={movie.id} movie={movie} setShowToWatch={setShowToWatch}/>)
